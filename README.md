@@ -1,3 +1,3 @@
-# Bubble Shooter 
+# Bubbly
 
-## Franklin Wang, Sean Chu, Greg
+## Franklin Wang, Sean Chu, Greg Redozubov

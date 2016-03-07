@@ -8,9 +8,17 @@ var collision = function(){
     
 }
 
-var ballMove = function(){
+var ballMove = function(e){
+    //First Get the slope between the mouse and the start circle
+        var gcd = function(a, b) {
+        if ( ! b) {
+            return a;
+        }
     
-}
+        return gcd(b, a % b);
+        };
+        gcd(Math.abs(e.offsetX - currBall.)
+    }
 
 var shooterDirection = function(){//determines where the arrow points
     

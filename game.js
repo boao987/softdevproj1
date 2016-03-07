@@ -4,6 +4,7 @@ var points = 0;
 var turns = 0;
 var ballArray;
 var currBall;
+var rowSize = 20;
 
 var collision = function(){
     
@@ -31,10 +32,12 @@ var moveDown = function(){//creates a newRow after a few turns
 }
 
 var newRow = function(){//will be used in newGame and moveDown
-    var rowArray = 
+    var rowArray;
     var ball = newBall();
     ball.setAttribute("xcor", );
     ball.setAttribute("ycor", );
+    
+    return rowArray;
 }
 
 var newBall = function(){//will be used in newRow

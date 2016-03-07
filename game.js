@@ -4,6 +4,7 @@ var points = 0;
 var turns = 0;
 var ballArray;
 var currBall;
+var frameid;
 
 var collision = function(){
     
@@ -11,14 +12,36 @@ var collision = function(){
 
 var ballMove = function(e){
     //First Get the slope between the mouse and the start circle
-        var gcd = function(a, b) {
+        var findgcd = function(a, b) {
         if ( ! b) {
             return a;
         }
     
-        return gcd(b, a % b);
+        return findgcd(b, a % b);
         };
-        gcd(Math.abs(e.offsetX - currBall.)
+        var gcd = findgcd(Math.abs(e.offsetX - currBall.getAttribute("xcor")), Math.abs(e.offsetY - currBall.getAttribute("ycor")));
+        var xchange = (e.offsetX - currBall.getAttribute("xcor")) / gcd;
+        var ychange = (e.offsetY - currBall.getAttribute("ycor")) / gcd;
+        var animate = function() {
+            //Check if the ball collided with something
+            if (collision){
+            }
+            //Check if it hit a wall
+            if (currBall.getAttribute("xcor") + ballRadius >= svg.width || currBall.getAttribute("xcor") - ballRadius <= 0) {
+                //If it hits a wall, negate the xchange/ychange
+                xchange = xchange * -1;
+            }
+            if (currBall.getAttribute("ycor") + ballRadius >= svg.height || currBall.getAttribute("ycor") - ballRadius <= 0) {
+                //If it hits a wall, negate the xchange/ychange
+                ychange = ychange * -1;
+            }
+            //If nothing happens, move the ball
+            currBall.setAttribute("xcor", currBall.getAttribute("xcor") + xchange);
+            currBall.setAttribute("ycor", currBall.getAttribute("ycor") + ychange);
+            //Add the ball to the element
+            svg.appendChild(currBall);
+        };
+        frameid = setInterval(animate, 10);
     }
 
 var shooterDirection = function(){//determines where the arrow points

@@ -11,7 +11,7 @@ var numRows = 5;
 
 var collision = function(){
     
-}
+};
 
 var ballMove = function(e){
     //First Get the slope between the mouse and the start circle
@@ -45,24 +45,24 @@ var ballMove = function(e){
             svg.appendChild(currBall);
         };
         frameid = setInterval(animate, 10);
-    }
+    };
 
 var shooterDirection = function(){//determines where the arrow points
     
-}
+};
 
 var isPopping = function(){//will be used in collision
     
-}
+};
 
 
 var isDead = function(){//checks if there are balls near the bottom
     
-}
+};
 
 var moveDown = function(){//creates a newRow after a few turns
     
-}
+};
 
 var newRow = function( rowNum ){//will be used in newGame and moveDown
     var rowArray = [];
@@ -77,7 +77,7 @@ var newRow = function( rowNum ){//will be used in newGame and moveDown
     }
     
     return rowArray;
-}
+};
 
 var newBall = function(){//will be used in newRow
     var color = "";
@@ -102,7 +102,7 @@ var newBall = function(){//will be used in newRow
     ball.setAttribute("r", ballRadius);
     ball.setAttribute("fill", color);
     return ball;
-}
+};
 
 var newGame = function(){//will be used in runGame
     points = 0;
@@ -110,8 +110,17 @@ var newGame = function(){//will be used in runGame
     for(var i=0; i<numRows; i++){
         ballArray.concat(newRow(i));
     }
-}
+};
 
 var runGame = function(){//will always be running
+    var startButton = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    startButton.setAttribute("x", 250);
+    startButton.setAttribute("y", 250);
+    startButton.setAttribute("fill", "#ff0000");
+    startButton.setAttribute("height", 20);
+    startButton.setAttribute("width", 50);
     
-}
+    svg.appendChild((startButton));
+};
+
+runGame();

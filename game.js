@@ -2,13 +2,12 @@ var svg = document.getElementById("main");
 var ballRadius = svg.width/20;
 var points = 0;
 var turns = 0;
-var ballArray;
+var ballArray = [];
 var currBall;
-<<<<<<< HEAD
 var rowSize = 20;
-=======
 var frameid;
->>>>>>> b7ca57f404d95c659bf9bfde4c36b0f89b6bad0e
+var offsetX = ballRadius/2;
+var numRows = 5;
 
 var collision = function(){
     
@@ -65,30 +64,37 @@ var moveDown = function(){//creates a newRow after a few turns
     
 }
 
-var newRow = function(){//will be used in newGame and moveDown
-    var rowArray;
+var newRow = function( rowNum ){//will be used in newGame and moveDown
+    var rowArray = [];
     var ball = newBall();
-    ball.setAttribute("xcor", );
-    ball.setAttribute("ycor", );
+   
+    for(var i = 0; i<rowSize; i++) {
+        
+         ball.setAttribute("xcor", (2*i+1)*ballRadius + (rowNum%2)*offsetX );
+         ball.setAttribute("ycor", (2*rowNum +1)*ballRadius);
+         
+         rowArray[i] = ball;
+    }
     
     return rowArray;
 }
 
 var newBall = function(){//will be used in newRow
+    var color = "";
     
     var chooseColor = function(){
          var randomNum = Math.random()*4
          if (randomNum <= 1){
-            var color = "red"
+            var color = "red";
          }
          else if(randomNum <= 2){
-            var color = "blue"
+            var color = "blue";
          }
          else if(randomNum <= 3){
-            var color = "green"
+            var color = "green";
          }
          else {
-            var color = "yellow"
+            var color = "yellow";
          }
     }
     
@@ -101,6 +107,9 @@ var newBall = function(){//will be used in newRow
 var newGame = function(){//will be used in runGame
     points = 0;
     
+    for(var i=0; i<numRows; i++){
+        ballArray.concat(newRow(i));
+    }
 }
 
 var runGame = function(){//will always be running

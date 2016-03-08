@@ -1,5 +1,5 @@
 var svg = document.getElementById("main");
-var ballRadius = svg.width/20;
+var ballRadius = 20;
 var points = 0;
 var turns = 0;
 var ballArray = [];
@@ -22,25 +22,45 @@ var ballMove = function(e){
     
         return findgcd(b, a % b);
         };
-        var gcd = findgcd(Math.abs(e.offsetX - currBall.getAttribute("xcor")), Math.abs(e.offsetY - currBall.getAttribute("ycor")));
-        var xchange = (e.offsetX - currBall.getAttribute("xcor")) / gcd;
-        var ychange = (e.offsetY - currBall.getAttribute("ycor")) / gcd;
+        var gcd = findgcd(Math.abs(e.offsetX - currBall.getAttribute("cx")), Math.abs(e.offsetY - currBall.getAttribute("cy")));
+        var xmove = 0;
+        var ymove = 0;
+        var xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
+        var ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
         var animate = function() {
             //Check if the ball collided with something
             if (collision){
             }
             //Check if it hit a wall
-            if (currBall.getAttribute("xcor") + ballRadius >= svg.width || currBall.getAttribute("xcor") - ballRadius <= 0) {
+            if (ballRadius + parseInt(currBall.getAttribute("cx")) >= 500 || parseInt(currBall.getAttribute("cx")) - ballRadius <= 0) {
                 //If it hits a wall, negate the xchange/ychange
                 xchange = xchange * -1;
             }
-            if (currBall.getAttribute("ycor") + ballRadius >= svg.height || currBall.getAttribute("ycor") - ballRadius <= 0) {
+            if (parseInt(currBall.getAttribute("cy")) + ballRadius >= 500 || parseInt(currBall.getAttribute("cy")) - ballRadius <= 0) {
                 //If it hits a wall, negate the xchange/ychange
                 ychange = ychange * -1;
             }
             //If nothing happens, move the ball
-            currBall.setAttribute("xcor", currBall.getAttribute("xcor") + xchange);
-            currBall.setAttribute("ycor", currBall.getAttribute("ycor") + ychange);
+            if (Math.abs(xmove) >= Math.abs(xchange)) {
+                xmove = 0;
+            }
+            if (Math.abs(ymove) >= Math.abs(ychange)) {
+                ymove = 0;
+            }
+            if (xchange > 0){
+                var xcor = parseInt(currBall.getAttribute("cx")) + 1;
+            }
+            else {
+                var xcor = parseInt(currBall.getAttribute("cx")) -1;
+            }
+            if (ychange > 0) {
+                var ycor = parseInt(currBall.getAttribute("cy")) + 1;
+            }
+            else {
+                var ycor = parseInt(currBall.getAttribute("cy")) -1;
+            }
+            currBall.setAttribute("cx", xcor);
+            currBall.setAttribute("cy", ycor);
             //Add the ball to the element
             svg.appendChild(currBall);
         };
@@ -124,3 +144,11 @@ var runGame = function(){//will always be running
 };
 
 runGame();
+//Bug Testing Stuff
+//currBall = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+//currBall.setAttribute("cx", 250);
+//currBall.setAttribute("cy", 250);
+//currBall.setAttribute("fill", "#ff0000");
+//currBall.setAttribute("r", 20);
+//svg.appendChild(currBall);
+svg.addEventListener("click", ballMove);

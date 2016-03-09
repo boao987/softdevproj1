@@ -22,9 +22,7 @@ var ballMove = function(e){
     
         return findgcd(b, a % b);
         };
-        var gcd = findgcd(Math.abs(e.offsetX - currBall.getAttribute("cx")), Math.abs(e.offsetY - currBall.getAttribute("cy")));
-        var xmove = 0;
-        var ymove = 0;
+        var gcd = findgcd(Math.abs(e.offsetX - parseInt (currBall.getAttribute("cx"))), Math.abs(e.offsetY - parseInt(currBall.getAttribute("cy"))));
         var xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
         var ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
         var animate = function() {
@@ -41,24 +39,8 @@ var ballMove = function(e){
                 ychange = ychange * -1;
             }
             //If nothing happens, move the ball
-            if (Math.abs(xmove) >= Math.abs(xchange)) {
-                xmove = 0;
-            }
-            if (Math.abs(ymove) >= Math.abs(ychange)) {
-                ymove = 0;
-            }
-            if (xchange > 0){
-                var xcor = parseInt(currBall.getAttribute("cx")) + 1;
-            }
-            else {
-                var xcor = parseInt(currBall.getAttribute("cx")) -1;
-            }
-            if (ychange > 0) {
-                var ycor = parseInt(currBall.getAttribute("cy")) + 1;
-            }
-            else {
-                var ycor = parseInt(currBall.getAttribute("cy")) -1;
-            }
+            xcor = xcor + xchange/1000;
+            ycor = ycor + ychange/1000;
             currBall.setAttribute("cx", xcor);
             currBall.setAttribute("cy", ycor);
             //Add the ball to the element

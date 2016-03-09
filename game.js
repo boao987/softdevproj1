@@ -79,11 +79,13 @@ var newRow = function( rowNum ){//will be used in newGame and moveDown
    
     for(var i = 0; i<rowSize; i++) {
         
-         ball.setAttribute("xcor", (2*i+1)*ballRadius + (rowNum%2)*offsetX );
-         ball.setAttribute("ycor", (2*rowNum +1)*ballRadius);
+     //    ball.setAttribute("cx", (2*i+1)*ballRadius + (rowNum%2)*offsetX );
+       //  ball.setAttribute("cy", (2*rowNum +1)*ballRadius);
          
          rowArray[i] = ball;
+       //  svg.appendChild(ball);
     }
+    
     
     return rowArray;
 };
@@ -94,18 +96,20 @@ var newBall = function(){//will be used in newRow
     var chooseColor = function(){
          var randomNum = Math.random()*4
          if (randomNum <= 1){
-            var color = "red";
+            color = "red";
          }
          else if(randomNum <= 2){
-            var color = "blue";
+            color = "blue";
          }
          else if(randomNum <= 3){
-            var color = "green";
+            color = "green";
          }
          else {
-            var color = "yellow";
+            color = "yellow";
          }
     }
+    
+    chooseColor();
     
     var ball = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     ball.setAttribute("r", ballRadius);
@@ -115,10 +119,14 @@ var newBall = function(){//will be used in newRow
 
 var newGame = function(){//will be used in runGame
     points = 0;
+    svg = document.getElementById("main");
+    ballArray = [];
     
     for(var i=0; i<numRows; i++){
-        ballArray.concat(newRow(i));
+        ballArray = ballArray.concat(newRow(i));
+        console.log(ballArray);
     }
+
 };
 
 var runGame = function(){//will always be running
@@ -129,15 +137,20 @@ var runGame = function(){//will always be running
     startButton.setAttribute("height", 20);
     startButton.setAttribute("width", 50);
     
+    for(var i=0; i<ballArray.length; i++){
+        svg.appendChild(ballArray[i]);
+    }
+    
     svg.appendChild((startButton));
+    startButton.addEventListener("click",newGame);
 };
 
-//runGame();
+runGame();
 //Bug Testing Stuff
-currBall = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-currBall.setAttribute("cx", 250);
-currBall.setAttribute("cy", 250);
-currBall.setAttribute("fill", "#ff0000");
-currBall.setAttribute("r", 20);
-svg.appendChild(currBall);
-svg.addEventListener("click", ballMove);
+// currBall = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+// currBall.setAttribute("cx", 250);
+// currBall.setAttribute("cy", 250);
+// currBall.setAttribute("fill", "#ff0000");
+// currBall.setAttribute("r", 20);
+// svg.appendChild(currBall);
+// svg.addEventListener("click", ballMove);

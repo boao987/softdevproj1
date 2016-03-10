@@ -136,7 +136,7 @@ var runGame = function(){//will always be running
     startButton.setAttribute("fill", "#ff0000");
     startButton.setAttribute("height", 20);
     startButton.setAttribute("width", 50);
-    
+    console.log(ballArray);
     for(var i=0; i<ballArray.length; i++){
         svg.appendChild(ballArray[i]);
     }
@@ -145,7 +145,7 @@ var runGame = function(){//will always be running
     startButton.addEventListener("click",newGame);
 };
 
-runGame();
+var startid = setInterval(runGame, 10);
 //Bug Testing Stuff
 // currBall = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 // currBall.setAttribute("cx", 250);

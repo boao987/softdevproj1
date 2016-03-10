@@ -116,8 +116,11 @@ var newBall = function(){//will be used in newRow
     ball.setAttribute("fill", color);
     return ball;
 };
-
+var once = false;
 var newGame = function(){//will be used in runGame
+    if (once){
+    }
+    else {
     points = 0;
     svg = document.getElementById("main");
     ballArray = [];
@@ -126,7 +129,8 @@ var newGame = function(){//will be used in runGame
         ballArray = ballArray.concat(newRow(i));
         console.log(ballArray);
     }
-
+    once = true;
+    }
 };
 
 var runGame = function(){//will always be running
@@ -136,13 +140,13 @@ var runGame = function(){//will always be running
     startButton.setAttribute("fill", "#ff0000");
     startButton.setAttribute("height", 20);
     startButton.setAttribute("width", 50);
-    console.log(ballArray);
+
     for(var i=0; i<ballArray.length; i++){
         svg.appendChild(ballArray[i]);
     }
     
     svg.appendChild((startButton));
-    startButton.addEventListener("click",newGame);
+    newGame();
 };
 
 var startid = setInterval(runGame, 10);

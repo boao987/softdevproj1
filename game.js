@@ -35,6 +35,7 @@ var collision = function(element){
             //Check if they are the same color
             if (element.getAttribute("fill") != ballArray[index].getAttribute("fill")) {
                 //If they are different colors dont do anything
+                        index +=1;
             }
             //If same, then add to inarow and check again
             else {
@@ -43,7 +44,7 @@ var collision = function(element){
                 collision(ballArray[index -1]);
             }
         }
-        index +=1;
+
     }
     
 };
@@ -65,41 +66,39 @@ var ballMove = function(e){
         var gcd = findgcd(Math.abs(e.offsetX - parseInt (currBall.getAttribute("cx"))), Math.abs(e.offsetY - parseInt(currBall.getAttribute("cy"))));
         var xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
         var ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
+        
         var animate = function() {
-            console.log(turns);
+        console.log(turns);
             //Check if the ball collided with something
-            if (turns >= 50){
-            }
-            else {
-            collision(currBall);
-            if (inarow > 1){
-                points += (inarow *40);
-                index = 0;
-                inarow = 0;
-            }
-            else {
+      //  collision(currBall);
+        if (inarow > 1){
+            points += (inarow *40);
+            index = 0;
+            inarow= 0;
+        }
+        else {
             //Check if it hit a wall
             if (ballRadius + parseInt(currBall.getAttribute("cx")) >= 500 || parseInt(currBall.getAttribute("cx")) - ballRadius <= 0) {
                 //If it hits a wall, negate the xchange/ychange
-                xchange = xchange * -1;
+                xchange= xchange * -1;
             }
             if (parseInt(currBall.getAttribute("cy")) + ballRadius >= 450 || parseInt(currBall.getAttribute("cy")) - ballRadius <= 0) {
-                //If it hits a wall, negate the xchange/ychange
-                ychange = ychange * -1;
+                    //If it hits a wall, negate the xchange/ychange
+                ychange= ychange * -1;
             }
-            //If nothing happens, move the ball
-            xcor = xcor + xchange/100;
-            ycor = ycor + ychange/100;
-            currBall.setAttribute("cx", xcor);
-            currBall.setAttribute("cy", ycor);
-            index = 0;
-        }}
+                //If nothing happens, move the ball
+            xcor= xcor + xchange/100;
+            ycor= ycor + ychange/100;
+                currBall.setAttribute("cx", xcor);
+                currBall.setAttribute("cy", ycor);
+            index= 0;
+        }
             //Add the ball to the element
             //svg.appendChild(currBall);
         };
         frameid = setInterval(animate, 10);
         turns +=1;
-        //animate();
+        animate();
     };
 
 var shooterDirection = function(){//determines where the arrow points
@@ -208,13 +207,13 @@ var newGame = function(){//will be used in runGame
     once = true;
     }
 };
+
 var populate = function() { //Fills up nextBall
     nextBall = newBall();
     nextBall.setAttribute("cx", 450);
     nextBall.setAttribute("cy", 475);
     svg.appendChild(nextBall);
-    console.log(nextBall.getAttribute("fill"));
-}
+};
 
 
 var runGame = function(){//will always be running
@@ -225,10 +224,9 @@ var runGame = function(){//will always be running
     //startButton.setAttribute("height", 20);
     //startButton.setAttribute("width", 50);
 
-    for(var i=0; i<ballArray.length; i++){
-        svg.appendChild(ballArray[i]);
-    }
-    //svg.appendChild((startButton));
+    // for(var i=0; i<ballArray.length; i++){
+    //     svg.appendChild(ballArray[i]);
+    // }
     if (once){
         score.textContent = "Points:" + points;
         if (fired) {

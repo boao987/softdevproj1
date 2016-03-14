@@ -105,7 +105,16 @@ var ballMove = function(e){
             ycor= ycor + ychange/100;
                 currBall.setAttribute("cx", xcor);
                 currBall.setAttribute("cy", ycor);
-                
+            }
+            else{
+                while(reachArray()){
+                     xcor= xcor - xchange/100;
+                     ycor= (2*ballArray.length/rowSize + 1)*ballRadius;
+                currBall.setAttribute("cx", xcor);
+                currBall.setAttribute("cy", ycor);
+                }
+                xchange = 0;
+                ychange = 0;
             }
             index= 0;
         }

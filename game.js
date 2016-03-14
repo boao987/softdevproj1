@@ -26,6 +26,7 @@ var isIntersect = function(element1, element2){
     }
     return false;
 }
+
 var collision = function(element){
     while (ballArray[index] != null) {
         console.log(index);
@@ -67,6 +68,18 @@ var ballMove = function(e){
         var xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
         var ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
         
+        var reachArray = function(){
+            for(var i=0; i<ballArray.length; i++){
+                if (currBall != ballArray[i]){
+                    if (isIntersect(currBall,ballArray[i])){
+                        return true;
+                    }
+                    
+                }
+            }
+            return false;
+        };
+        
         var animate = function() {
         console.log(turns);
             //Check if the ball collided with something
@@ -87,14 +100,17 @@ var ballMove = function(e){
                 ychange= ychange * -1;
             }
                 //If nothing happens, move the ball
+            if(!reachArray()){
             xcor= xcor + xchange/100;
             ycor= ycor + ychange/100;
                 currBall.setAttribute("cx", xcor);
                 currBall.setAttribute("cy", ycor);
+                
+            }
             index= 0;
         }
             //Add the ball to the element
-            //svg.appendChild(currBall);
+            svg.appendChild(currBall);
         };
         frameid = setInterval(animate, 10);
         turns +=1;

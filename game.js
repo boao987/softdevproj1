@@ -12,9 +12,11 @@ var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 var score = document.createElementNS("http://www.w3.org/2000/svg", "text");
 var nextBall;
 var fired = false;
-var inarow = 0;
+var idnum = 0;
 var index = 0;
-
+var xchange;
+var ychange;
+var intersected = [];
 var distance = function(x1,y1,x2,y2) {
     return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
@@ -22,6 +24,7 @@ var distance = function(x1,y1,x2,y2) {
 
 var isIntersect = function(element1, element2){
     if (distance(parseInt(element1.getAttribute("cx")),parseInt(element1.getAttribute("cy")),parseInt(element2.getAttribute("cx")),parseInt(element2.getAttribute("cy"))) <= ballRadius && distance(parseInt(element1.getAttribute("cx")),parseInt(element1.getAttribute("cy")),parseInt(element2.getAttribute("cx")),parseInt(element2.getAttribute("cy"))) > 0) {
+        intersected.push(element2);
         return true;
     }
     return false;
@@ -29,8 +32,6 @@ var isIntersect = function(element1, element2){
 
 var collision = function(element){
     while (ballArray[index] != null) {
-        console.log(index);
-        console.log(inarow);
         //Check if the ball hit another ball
         if (isIntersect(element,ballArray[index])){
             //Check if they are the same color
@@ -65,8 +66,8 @@ var ballMove = function(e){
         var xcor = parseInt(currBall.getAttribute("cx"));
         var ycor = parseInt(currBall.getAttribute("cy"));
         var gcd = findgcd(Math.abs(e.offsetX - parseInt (currBall.getAttribute("cx"))), Math.abs(e.offsetY - parseInt(currBall.getAttribute("cy"))));
-        var xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
-        var ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
+        xchange = (e.offsetX - parseInt(currBall.getAttribute("cx")) / gcd);
+        ychange = (e.offsetY - parseInt(currBall.getAttribute("cy")) / gcd);
         
         var reachArray = function(){
             for(var i=0; i<ballArray.length; i++){
@@ -84,12 +85,6 @@ var ballMove = function(e){
         console.log(turns);
             //Check if the ball collided with something
       //  collision(currBall);
-        if (inarow > 1){
-            points += (inarow *40);
-            index = 0;
-            inarow= 0;
-        }
-        else {
             //Check if it hit a wall
             if (ballRadius + parseInt(currBall.getAttribute("cx")) >= 500 || parseInt(currBall.getAttribute("cx")) - ballRadius <= 0) {
                 //If it hits a wall, negate the xchange/ychange
@@ -117,28 +112,42 @@ var ballMove = function(e){
                 ychange = 0;
             }
             index= 0;
-        }
+        };
             //Add the ball to the element
             svg.appendChild(currBall);
-        };
         frameid = setInterval(animate, 10);
-        turns +=1;
-        animate();
     };
 
-var shooterDirection = function(){//determines where the arrow points
-    //load the image
-    var img = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    img.setAttributeNS("http://www.w3.org/1999/xlink", "href","arrow.jpeg");
-    img.setAttribute("x", 250);
-    img.setAttribute("y", 350);
-    img.setAttribute("width", 100);
-    img.setAttribute("height", 100);
-    svg.appendChild(img);
-};
-
+var contains = function(array, element) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == element) {
+            return true;
+        }
+    }
+    return false;
+}
 var isPopping = function(){//will be used in collision
-    
+    var pop = 0;
+    var checked = [];
+    var popped = [];
+    var checkIntersected = function(list) {
+        for (var i = 0; i < ballArray.length; i++) {
+            if (list[i].getAttribute("fill") == currBall.getAttribute("fill") && !contains(checked,list[i].getAttribute("id"))) {
+                pop +=1;
+                popped.push(list[i]);
+                checked.push(list[i].getAttribute("id"));
+            }
+        }
+    };
+    console.log(intersected[i]);
+    if (intersected[i].getAttribute("fill") == currBall.getAttribute("fill")) {
+        pop +=1;
+        popped.push(intersected[i]);
+    }
+    for (var i = 0; i < popped.length; i++){
+        svg.removeChild(popped[i]);
+    }
+    points = pop *40;
 };
 
 
@@ -189,8 +198,10 @@ var newBall = function(){//will be used in newRow
     chooseColor();
     
     var ball = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    ball.setAttribute("id", idnum);
     ball.setAttribute("r", ballRadius);
     ball.setAttribute("fill", color);
+    idnum += 1;
     return ball;
 };
 var once = false;
@@ -254,10 +265,20 @@ var runGame = function(){//will always be running
     // }
     if (once){
         score.textContent = "Points:" + points;
-        if (fired) {
-            currBall = nextBall;
+        if (xchange == 0 && ychange == 0 & fired) {
+            clearInterval(frameid);
+            //isPopping();
+            ballArray.push(currBall);
+            svg.removeChild(currBall);
+            currBall = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            currBall.setAttribute("cx", 250);
+            currBall.setAttribute("cy", 400);
+            currBall.setAttribute("fill", nextBall.getAttribute("fill"));
+            console.log(currBall);
+            svg.appendChild(currBall);
             populate();
             fired = false;
+            turns +=1;
         }
         svg.addEventListener("click", ballMove);
     }
